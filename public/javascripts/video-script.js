@@ -2,6 +2,7 @@
  * Created by owner on 15.11.15.
  */
 
+    // TEST SERVICE
 var videoService = (function($){
     var module = {};
 
@@ -12,6 +13,11 @@ var videoService = (function($){
     module.pause = function(){
         return invokeAction("pause");
     };
+
+    module.setVolume = function(value){
+        return invokeAction("set-volume?value="+value);
+    };
+
 
     function invokeAction(action){
         if(typeof action !== "string")
@@ -28,7 +34,8 @@ var videoService = (function($){
 
 (function($, vs){
     var socket = io("http://localhost:8080");
-
+    var videoPlayer = $("#fs-video-player").get(0);
+    /*
     $('#play-btn').click(function(){
         vs.play();
     });
@@ -37,8 +44,24 @@ var videoService = (function($){
         vs.pause();
     });
 
-    socket.on('video', function(action){
-       console.log(action);
+    $('#volume-up').click(function(){
+        vs.setVolume(0.8);
+    });
+
+    $('#volume-down').click(function(){
+        vs.setVolume(0.2);
+    });
+    */
+    socket.on('video', function(data){
+       if(data.action === "play" && videoPlayer.paused){
+           videoPlayer.play();
+       }else if(data.action === "pause" && videoPlayer.played){
+           videoPlayer.pause();
+       }else if(data.action === "setVolume"){
+            if(0 <= data.value <= 1){
+                videoPlayer.volume = data.value;
+            }
+       }
     });
 
 

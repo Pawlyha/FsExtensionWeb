@@ -16,22 +16,21 @@ router.get('/', function(req, res, next) {
 
 // play video player
 router.get('/play', function(req, res, next){
-    io.emit("video", "play");
+    io.emit("video", {action: "play"});
     res.json({"status": "play"});
 });
 
 // pause video player
 router.get('/pause', function(req, res, next){
-    io.emit("video", "pause");
+    io.emit("video", {action: "pause"});
     res.json({"status": "pause"});
 });
 
-
-io.on('connection', function(socket){
-    console.log("connection is settled");
-    socket.on('disconnect', function(){
-       console.log("user is disconnected");
-    });
+// change volume in the video player
+router.get('/set-volume', function(req, res, next){
+    io.emit("video", {action: "setVolume", value: req.query.value});
+    res.json({"status": "setVolume"});
 });
+
 
 module.exports = router;
