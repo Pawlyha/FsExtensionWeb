@@ -7,7 +7,7 @@ var http = require('http').Server(express);
 var io = require('socket.io')(http);
 var router = express.Router();
 
-http.listen(8080, "127.0.0.1");
+http.listen(3001, "http://fsto-videoext.rhcloud.com");
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
